@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using ModernNesting.Models;
 
 namespace ModernNesting.Core

@@ -1,0 +1,109 @@
+<Window x:Class="ModernNesting.UI.Dialogs.SheetSettingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sheet Settings" Height="400" Width="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Configure up to 3 different sheet sizes:" 
+                   Margin="0,0,0,10" 
+                   FontWeight="Bold"/>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Sheet 1 -->
+            <GroupBox Header="Sheet 1 (Primary)" Margin="0,5">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Width:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="Sheet1Width" Grid.Column="1" Margin="5" Text="1000"/>
+                    <TextBlock Text="Height:" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBox x:Name="Sheet1Height" Grid.Column="3" Margin="5" Text="1000"/>
+
+                    <TextBlock Text="Material:" Grid.Row="1" VerticalAlignment="Center"/>
+                    <TextBox x:Name="Sheet1Material" Grid.Row="1" Grid.Column="1" Margin="5"/>
+                    <TextBlock Text="Thickness:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBox x:Name="Sheet1Thickness" Grid.Row="1" Grid.Column="3" Margin="5" Text="1.0"/>
+                </Grid>
+            </GroupBox>
+
+            <!-- Sheet 2 -->
+            <GroupBox Grid.Row="1" Header="Sheet 2 (Optional)" Margin="0,5">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Width:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="Sheet2Width" Grid.Column="1" Margin="5"/>
+                    <TextBlock Text="Height:" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBox x:Name="Sheet2Height" Grid.Column="3" Margin="5"/>
+
+                    <TextBlock Text="Material:" Grid.Row="1" VerticalAlignment="Center"/>
+                    <TextBox x:Name="Sheet2Material" Grid.Row="1" Grid.Column="1" Margin="5"/>
+                    <TextBlock Text="Thickness:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBox x:Name="Sheet2Thickness" Grid.Row="1" Grid.Column="3" Margin="5"/>
+                </Grid>
+            </GroupBox>
+
+            <!-- Sheet 3 -->
+            <GroupBox Grid.Row="2" Header="Sheet 3 (Optional)" Margin="0,5">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Width:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="Sheet3Width" Grid.Column="1" Margin="5"/>
+                    <TextBlock Text="Height:" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBox x:Name="Sheet3Height" Grid.Column="3" Margin="5"/>
+
+                    <TextBlock Text="Material:" Grid.Row="1" VerticalAlignment="Center"/>
+                    <TextBox x:Name="Sheet3Material" Grid.Row="1" Grid.Column="1" Margin="5"/>
+                    <TextBlock Text="Thickness:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBox x:Name="Sheet3Thickness" Grid.Row="1" Grid.Column="3" Margin="5"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="OK" Width="75" Click="OkButton_Click" IsDefault="True"/>
+            <Button Content="Cancel" Width="75" Margin="10,0,0,0" Click="CancelButton_Click" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

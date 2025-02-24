@@ -1,77 +1,87 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ModernNesting.Models;
 
 namespace ModernNesting.IO
 {
     public class FileImporter
     {
-        public enum FileType
+        private readonly List<IFileImporter> importers;
+
+        public FileImporter()
         {
-            DXF,
-            SVG,
-            AI,
-            CDR
+            importers = new List<IFileImporter>
+            {
+                new DxfImporter(),
+                // Se añadirán más importadores aquí
+            };
         }
 
         public List<Part> ImportFile(string filePath)
         {
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("The specified file does not exist.", filePath);
+            }
+
             var extension = Path.GetExtension(filePath).ToLower();
-            var fileType = GetFileType(extension);
-            
-            return fileType switch
+            var importer = importers.FirstOrDefault(i => i.CanHandle(extension));
+
+            if (importer == null)
             {
-                FileType.DXF => ImportDXF(filePath),
-                FileType.SVG => ImportSVG(filePath),
-                FileType.AI => ImportAI(filePath),
-                FileType.CDR => ImportCDR(filePath),
-                _ => throw new NotSupportedException($"File type {extension} is not supported")
-            };
-        }
+                throw new NotSupportedException($"File type {extension} is not supported");
+            }
 
-        private FileType GetFileType(string extension)
-        {
-            return extension switch
+            try
             {
-                ".dxf" => FileType.DXF,
-                ".svg" => FileType.SVG,
-                ".ai" => FileType.AI,
-                ".cdr" => FileType.CDR,
-                _ => throw new NotSupportedException($"Extension {extension} is not supported")
-            };
+                var parts = importer.Import(filePath);
+
+                // Post-processing
+                foreach (var part in parts)
+                {
+                    // Ensure unique names
+                    if (string.IsNullOrEmpty(part.Name))
+                    {
+                        part.Name = $"Part_{Guid.NewGuid().ToString().Substring(0, 8)}";
+                    }
+
+                    // Validate geometry
+                    if (part.Width <= 0 || part.Height <= 0)
+                    {
+                        throw new InvalidDataException($"Invalid dimensions for part {part.Name}");
+                    }
+                }
+
+                return parts;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error importing file: {ex.Message}", ex);
+            }
         }
 
-        private List<Part> ImportDXF(string filePath)
+        public bool CanImportFile(string filePath)
         {
-            // Implementación básica - será expandida con biblioteca DXF real
-            var parts = new List<Part>();
-            // TODO: Implementar importación DXF
-            return parts;
+            if (string.IsNullOrEmpty(filePath)) return false;
+
+            var extension = Path.GetExtension(filePath).ToLower();
+            return importers.Any(i => i.CanHandle(extension));
         }
 
-        private List<Part> ImportSVG(string filePath)
+        public string GetSupportedFileTypes()
         {
-            // Implementación básica - será expandida con biblioteca SVG real
-            var parts = new List<Part>();
-            // TODO: Implementar importación SVG
-            return parts;
+            return "All Supported Files|*.dxf;*.svg;*.ai;*.cdr|" +
+                   "DXF Files (*.dxf)|*.dxf|" +
+                   "SVG Files (*.svg)|*.svg|" +
+                   "Adobe Illustrator Files (*.ai)|*.ai|" +
+                   "CorelDRAW Files (*.cdr)|*.cdr";
         }
 
-        private List<Part> ImportAI(string filePath)
+        public List<string> GetSupportedExtensions()
         {
-            // Implementación básica - será expandida con conversión AI->PDF->SVG
-            var parts = new List<Part>();
-            // TODO: Implementar importación AI
-            return parts;
-        }
-
-        private List<Part> ImportCDR(string filePath)
-        {
-            // Implementación básica - será expandida con conversión CDR->SVG
-            var parts = new List<Part>();
-            // TODO: Implementar importación CDR
-            return parts;
+            return new List<string> { ".dxf", ".svg", ".ai", ".cdr" };
         }
     }
 }

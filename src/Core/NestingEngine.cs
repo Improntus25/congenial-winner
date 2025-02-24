@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using ModernNesting.Models;
 
 namespace ModernNesting.Core
@@ -28,7 +29,7 @@ namespace ModernNesting.Core
             {
                 var currentSheet = availableSheets[currentSheetIndex];
                 var sheetResult = ProcessSheet(currentSheet, remainingParts);
-                
+
                 result.SheetResults.Add(sheetResult);
                 remainingParts = remainingParts.Except(sheetResult.PlacedParts).ToList();
                 currentSheetIndex++;
@@ -50,10 +51,10 @@ namespace ModernNesting.Core
             foreach (var part in partsToPlace)
             {
                 var position = FindBestPosition(part, sheet, placedParts);
-                if (position != null)
+                if (position.HasValue)
                 {
                     placedParts.Add(part);
-                    positions[part] = position;
+                    positions[part] = position.Value;
                 }
             }
 
@@ -62,7 +63,7 @@ namespace ModernNesting.Core
             return sheetResult;
         }
 
-        private Point FindBestPosition(Part part, Sheet sheet, List<Part> placedParts)
+        private Point? FindBestPosition(Part part, Sheet sheet, List<Part> placedParts)
         {
             // Implementación básica - será mejorada con algoritmo genético
             // Por ahora solo verifica si cabe en la posición (0,0)
